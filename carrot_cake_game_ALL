@@ -421,6 +421,47 @@ const btnShop      = document.getElementById('btn-shop');
 const btnAdmin     = document.getElementById('btn-admin');
 const btnCookbook  = document.getElementById('btn-cookbook');
 const btnStats     = document.getElementById('btn-stats');
+// ── Top nav button handlers ──────────────────────────────────────────
+btnPlay.addEventListener('click', () => {
+  showMenu();
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btnPlay.classList.add('active');
+});
+
+btnBadges.addEventListener('click', () => {
+  showBadgesPanel();
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btnBadges.classList.add('active');
+});
+
+btnShop.addEventListener('click', () => {
+  overlay.style.display='flex';
+  overlay.innerHTML = '<h2>🍰 Shop (Coming Soon!)</h2><p>Shop features coming in future update!</p>';
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btnShop.classList.add('active');
+});
+
+btnAdmin.addEventListener('click', () => {
+  alert('Admin Panel - Reserved for future features');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btnAdmin.classList.add('active');
+});
+
+btnCookbook.addEventListener('click', () => {
+  overlay.style.display='flex';
+  overlay.innerHTML = '<h2>📖 Cookbook (Coming Soon!)</h2><p>Recipe guides coming in future update!</p>';
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btnCookbook.classList.add('active');
+});
+
+btnStats.addEventListener('click', () => {
+  overlay.style.display='flex';
+  overlay.innerHTML = `<h2>📊 Your Stats</h2><div style="width:100%;text-align:left;">
+    ${Object.entries(stats).map(([mode, s]) => `<div style="margin:4px 0;"><b>${MODE_NAMES[mode]}:</b> Played: ${s.played}, Score: ${s.totalScore}, Best Combo: ${s.maxCombo}</div>`).join('')}
+  </div>`;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btnStats.classList.add('active');
+});
 
 // ── State ─────────────────────────────────────────────────────────────────
 let basketX=200, score=0, lives=3, level=1;
