@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrot Cake Catcher 🥕</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🥕</text></svg>">
+</head>
+<body>
+
+<h1>🥕 Carrot Cake Catcher</h1>
+
+<div id="top-nav">
+  <button class="nav-btn active" id="btn-play">🎮 Play</button>
+  <button class="nav-btn" id="btn-badges">🏅 Badges</button>
+  <button class="nav-btn" id="btn-lb">🌍 Board</button>
+  <button class="nav-btn" id="btn-drive">🚗 Drive</button>
+  <button class="nav-btn" id="btn-bake">🎂 Bake</button>
+  <button class="nav-btn" id="btn-tycoon">🏭 Tycoon</button>
+  <button class="nav-btn" id="btn-2p">👥 2P</button>
+  <button class="nav-btn" id="btn-clicker">🥕 Clicker</button>
+  <button class="nav-btn" id="btn-shop">🍰 Shop</button>
+  <button class="nav-btn" id="btn-admin">🛠️ Admin</button>
+  <button class="nav-btn" id="btn-cookbook">📖 Cookbook</button>
+  <button class="nav-btn" id="btn-stats">📊 Stats</button>
+  <button class="nav-btn" id="btn-changelog">📋 Updates</button>
+</div>
+
+<div id="hud">
+  <div class="hud-box">Score: <span id="score-val">0</span></div>
+  <div class="hud-box">❤️ <span id="lives-val">3</span></div>
+  <div class="hud-box">Best: <span id="best-val">0</span></div>
+  <div class="hud-box" id="mode-badge">Classic</div>
+</div>
+
+<div id="game-area">
+  <div id="level-badge">Lv <span id="lv-val">1</span></div>
+  <div id="baker-lvl-badge" style="position:absolute;top:8px;left:8px;z-index:5;background:rgba(255,255,255,0.85);border-radius:12px;padding:3px 9px;font-weight:800;font-size:0.75rem;color:#c45a18;">Baker Lv 0</div>
+  <div id="holiday-banner" style="display:none;position:absolute;top:34px;left:50%;transform:translateX(-50%);z-index:5;padding:4px 12px;border-radius:12px;font-weight:800;font-size:0.75rem;color:#fff;background:#ff6b6b;text-shadow:1px 1px 0 rgba(0,0,0,0.3);">🎄 Holiday Event!</div>
+  <div id="mute-toggle-btn" onclick="toggleMute()" style="position:absolute;top:8px;right:44px;z-index:5;background:rgba(255,255,255,0.85);border-radius:12px;padding:3px 9px;font-weight:800;font-size:0.85rem;cursor:pointer;">🔊</div>
+  <div id="dark-toggle-btn" onclick="toggleDarkMode()" style="position:absolute;top:8px;right:8px;z-index:5;background:rgba(255,255,255,0.85);border-radius:12px;padding:3px 9px;font-weight:800;font-size:0.85rem;cursor:pointer;">🌙</div>
+  <div id="timer-bar-wrap"><div id="timer-bar"></div></div>
+  <div id="combo-display">🔥 x2</div>
+  <div id="particles-container"></div>
+  <div id="powerup-msg">🌀 Basket shrunk!</div>
+
+  <div id="basket">
+    <svg id="basket-svg" width="80" height="54" viewBox="0 0 80 54" fill="none">
+      <rect x="2" y="22" width="76" height="26" rx="6" fill="#a06b3c"/>
+      <rect x="2" y="22" width="76" height="8"  rx="4" fill="#7a4e28"/>
+      <rect x="2" y="8"  width="76" height="18" rx="5" fill="#fdf6e3"/>
+      <ellipse cx="40" cy="9" rx="37" ry="10" fill="#fdf6e3"/>
+      <text x="30" y="19" font-size="17" text-anchor="middle">🥕</text>
+      <text x="50" y="19" font-size="17" text-anchor="middle">🥕</text>
+      <rect x="2" y="8" width="76" height="40" rx="6" stroke="#8a5530" stroke-width="3" fill="none"/>
+    </svg>
+  </div>
+
+  <div id="score-popup">+10</div>
+
+  <!-- Badge unlock toast -->
+  <div id="badge-toast">
+    <div class="toast-icon" id="toast-icon">🏅</div>
+    <div class="toast-text">
+      <div class="toast-title">Badge Unlocked!</div>
+      <div class="toast-name" id="toast-name">First Bite</div>
+    </div>
+  </div>
+
+  <!-- Name prompt (first launch) -->
+  <div id="name-prompt" style="display:none;position:absolute;inset:0;background:rgba(255,240,200,0.98);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:60;border-radius:20px;">
+    <div style="font-size:3rem;animation:bounce 0.7s infinite alternate">🥕</div>
+    <h2 style="font-family:'Fredoka One',cursive;color:var(--carrot-dark);font-size:1.8rem;text-shadow:3px 3px 0 #f5e6c8">Welcome, Baker!</h2>
+    <p style="font-weight:700;color:var(--walnut);text-align:center;font-size:0.9rem">Enter your name for the 🌍 Leaderboard</p>
+    <input id="welcome-name" type="text" maxlength="16" placeholder="Your name…" style="font-family:'Fredoka One',cursive;font-size:1rem;border:3px solid var(--carrot);border-radius:12px;padding:7px 14px;width:160px;outline:none;">
+    <button class="play-btn" id="welcome-go-btn">🍰 Let's Bake!</button>
+    <button class="small-btn" id="welcome-skip-btn">Skip for now</button>
+  </div>
+
+  <!-- Main overlay -->
+  <div id="overlay">
+    <div class="big-emoji">🎂</div>
+    <h2>Carrot Cake Catcher</h2>
+    <div class="mode-grid" id="main-mode-grid">
+      <div class="mode-card selected" data-mode="classic"><div class="mode-icon">🥕</div><div class="mode-name">Classic</div><div class="mode-desc">Catch goodies, dodge baddies. 3 lives!</div></div>
+      <div class="mode-card" data-mode="timeattack"><div class="mode-icon">⏱️</div><div class="mode-name">Time Attack</div><div class="mode-desc">60 seconds! Score as much as you can!</div></div>
+      <div class="mode-card" data-mode="zen"><div class="mode-icon">🌿</div><div class="mode-name">Zen</div><div class="mode-desc">No baddies. Relax and catch!</div></div>
+      <div class="mode-card" data-mode="nightmare"><div class="mode-icon">💀</div><div class="mode-name">Nightmare</div><div class="mode-desc">1 life. Tiny basket. Brutal speed!</div></div>
+      <div class="mode-card" data-mode="blitz"><div class="mode-icon">⚡</div><div class="mode-name">Blitz</div><div class="mode-desc">30 seconds, insane speed, max chaos!</div></div>
+      <div class="mode-card" data-mode="precision"><div class="mode-icon">🎯</div><div class="mode-name">Precision</div><div class="mode-desc">Only ⭐ & 🎂 score. 🥕 are traps!</div></div>
+      <div class="mode-card" data-mode="reversed"><div class="mode-icon">🔄</div><div class="mode-name">Reversed</div><div class="mode-desc">Stars & icing are BAD. Catch only cakes!</div></div>
+      <div class="mode-card" data-mode="bigbasket"><div class="mode-icon">🧺</div><div class="mode-name">Big Basket</div><div class="mode-desc">Giant basket, 5 lives — go for huge scores!</div></div>
+      <div class="mode-card" data-mode="nocombo"><div class="mode-icon">🚫</div><div class="mode-name">No Combo</div><div class="mode-desc">No multipliers — raw skill only!</div></div>
+      <div class="mode-card" data-mode="speed"><div class="mode-icon">💨</div><div class="mode-name">Speed Run</div><div class="mode-desc">45s, ultra-fast items, 5 lives!</div></div>
+      <div class="mode-card" data-mode="survival"><div class="mode-icon">☠️</div><div class="mode-name">Survival</div><div class="mode-desc">1 life, 50% baddies. How far can you go?</div></div>
+      <div class="mode-card" data-mode="golden"><div class="mode-icon">🌟</div><div class="mode-name">Golden</div><div class="mode-desc">Only stars count. Carrots are traps!</div></div>
+      <div class="mode-card" data-mode="chaos"><div class="mode-icon">🌀</div><div class="mode-name">Chaos</div><div class="mode-desc">Everything spawns at once. Pure madness!</div></div>
+      <div class="mode-card" data-mode="easter" id="easter-card"><div class="mode-icon">🥚</div><div class="mode-name" id="easter-label">🥚 Easter</div><div class="mode-desc">Catch Easter eggs, but watch for tricks!</div></div>
+    </div>
+    <button class="play-btn" id="start-btn">🍰 Start Baking!</button>
+    <div class="legend">Mouse/finger to move · 🍦=+100 (rare) · combo x3=2x</div>
+  </div>
+</div>
+
+<div class="legend" style="margin-top:6px;">🥕+10 · 🧁+20 · 🍩+15 · 🍰+30 · 🎂+25 · ⭐+50 · 🍦+100 (rare!) · 🐛💧=-1 life · 🌀=shrinks</div>
+
+<script src="game.js"></script>
+</body>
+</html>
